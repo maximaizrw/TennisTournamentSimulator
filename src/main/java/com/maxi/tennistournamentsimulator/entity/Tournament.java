@@ -1,4 +1,4 @@
-package com.maxi.tennistournamentsimulator.entities;
+package com.maxi.tennistournamentsimulator.entity;
 
 import com.maxi.tennistournamentsimulator.enums.Genre;
 import jakarta.persistence.*;
@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -28,9 +27,6 @@ public class Tournament {
     @NotNull(message = "El género del torneo no puede ser nulo")
     @Enumerated(EnumType.STRING)
     private Genre genre;
-
-    private LocalDate startDate;
-    private LocalDate endDate;
 
     @ManyToMany
     @JoinTable(

@@ -1,4 +1,4 @@
-package com.maxi.tennistournamentsimulator.entities;
+package com.maxi.tennistournamentsimulator.entity;
 
 import com.maxi.tennistournamentsimulator.enums.Genre;
 import jakarta.persistence.*;
@@ -46,4 +46,5 @@ public class Player {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Genre genre;
+
 }

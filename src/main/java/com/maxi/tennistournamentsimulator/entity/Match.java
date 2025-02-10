@@ -1,8 +1,13 @@
-package com.maxi.tennistournamentsimulator.entities;
+package com.maxi.tennistournamentsimulator.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
 
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "matches")
 public class Match {
