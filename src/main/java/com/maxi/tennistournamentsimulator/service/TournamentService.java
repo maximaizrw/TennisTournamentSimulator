@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface TournamentService {
     Optional<TournamentDto> addTournament(String name, String genre);
-    Optional<TournamentDto> getMovieById(Long id);
-    List<TournamentDto> getAllMovies();
+    Optional<TournamentDto> getTournamentById(Long id);
+    List<TournamentDto> getAllTournaments();
 }

@@ -5,11 +5,9 @@ import com.maxi.tennistournamentsimulator.entity.Tournament;
 import com.maxi.tennistournamentsimulator.service.TournamentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -30,6 +28,19 @@ public class TournamentController {
         return tournamentDto
                 .map(dto -> new ResponseEntity<>(dto, HttpStatus.CREATED))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TournamentDto> getTournamentById(@PathVariable Long id) {
+        return tournamentService.getTournamentById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+
+    @GetMapping
+    public ResponseEntity<List<TournamentDto>> getAllTournaments() {
+        return ResponseEntity.ok(tournamentService.getAllTournaments());
     }
 
 }

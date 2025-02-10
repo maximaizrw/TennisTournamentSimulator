@@ -8,6 +8,7 @@ import com.maxi.tennistournamentsimulator.service.TournamentService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +21,6 @@ public class TournamentServiceImpl implements TournamentService {
         this.tournamentRepository = tournamentRepository;
     }
 
-    //Se crea un torneo solo con nombre y genero
     @Transactional
     @Override
     public Optional<TournamentDto> addTournament(String name, String genre) {
@@ -31,7 +31,6 @@ public class TournamentServiceImpl implements TournamentService {
             throw new IllegalArgumentException("Género inválido: " + genre);
         }
 
-        // Verificar si ya existe un torneo con el mismo nombre
         if (tournamentRepository.existsByName(name)) {
             throw new IllegalArgumentException("El torneo con nombre " + name + " ya existe.");
         }
@@ -56,16 +55,31 @@ public class TournamentServiceImpl implements TournamentService {
         return Optional.of(tournamentDto);
     }
 
-
-    @Transactional(readOnly = true)
     @Override
-    public Optional<TournamentDto> getMovieById(Long id) {
-        return Optional.empty();
+    public Optional<TournamentDto> getTournamentById(Long id) {
+        Optional<Tournament> tournamentOptional = tournamentRepository.findById(id);
+        if (tournamentOptional.isPresent()) {
+            Tournament tournament = tournamentOptional.get();
+            return Optional.of(new TournamentDto(
+                    tournament.getId(),
+                    tournament.getName(),
+                    tournament.getGenre()));
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<TournamentDto> getAllMovies() {
-        return List.of();
+    public List<TournamentDto> getAllTournaments() {
+        return tournamentRepository.findAll().stream()
+                .map(tournament -> TournamentDto.builder()
+                        .id(tournament.getId())
+                        .name(tournament.getName())
+                        .genre(tournament.getGenre())
+                        .build()) // Mueve esto dentro del map
+                .toList();
     }
+
+
 }
