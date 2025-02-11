@@ -38,6 +38,7 @@ public class PlayerServiceImpl implements PlayerService {
          Player savedPlayer = playerRepository.save(player);
 
          PlayerDto response = new PlayerDto(
+                 savedPlayer.getId(),
                  savedPlayer.getName(),
                  savedPlayer.getSkillLevel(),
                  savedPlayer.getStrength(),
@@ -48,13 +49,38 @@ public class PlayerServiceImpl implements PlayerService {
          return Optional.of(response);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<PlayerDto> getPlayerById(Long id) {
+        Optional<Player> playerOptional = playerRepository.findById(id);
+        if (playerOptional.isPresent()) {
+            Player player = playerOptional.get();
+            return Optional.of(new PlayerDto(
+                    player.getId(),
+                    player.getName(),
+                    player.getSkillLevel(),
+                    player.getStrength(),
+                    player.getMovementSpeed(),
+                    player.getReactionTime(),
+                    player.getGenre()
+            ));
+        }
         return Optional.empty();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<PlayerDto> getAllPlayers() {
-        return List.of();
+        return playerRepository.findAll().stream()
+                .map(player -> PlayerDto.builder()
+                                .id(player.getId())
+                                .name(player.getName())
+                                .skillLevel(player.getSkillLevel())
+                                .strength(player.getStrength())
+                                .movementSpeed(player.getMovementSpeed())
+                                .reactionTime(player.getReactionTime())
+                                .genre(player.getGenre())
+                                .build())
+                .toList();
     }
 }

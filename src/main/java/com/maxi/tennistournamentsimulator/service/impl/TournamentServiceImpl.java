@@ -2,13 +2,11 @@ package com.maxi.tennistournamentsimulator.service.impl;
 
 import com.maxi.tennistournamentsimulator.dto.TournamentDto;
 import com.maxi.tennistournamentsimulator.entity.Tournament;
-import com.maxi.tennistournamentsimulator.enums.Genre;
 import com.maxi.tennistournamentsimulator.repository.TournamentRepository;
 import com.maxi.tennistournamentsimulator.service.TournamentService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,36 +21,23 @@ public class TournamentServiceImpl implements TournamentService {
 
     @Transactional
     @Override
-    public Optional<TournamentDto> addTournament(String name, String genre) {
-        Genre tournamentGenre;
-        try {
-            tournamentGenre = Genre.valueOf(genre.toUpperCase()); // Convierte el string a enum
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Género inválido: " + genre);
-        }
-
-        if (tournamentRepository.existsByName(name)) {
-            throw new IllegalArgumentException("El torneo con nombre " + name + " ya existe.");
-        }
-
+    public Optional<TournamentDto> addTournament(TournamentDto tournamentDto) {
         Tournament tournament = new Tournament(
                 null,
-                name,
-                tournamentGenre,
+                tournamentDto.getName(),
+                tournamentDto.getGenre(),
                 null,
                 null,
                 null
         );
+        Tournament savedTournament = tournamentRepository.save(tournament);
 
-        tournament = tournamentRepository.save(tournament); // Guarda y obtiene el ID generado
-
-        TournamentDto tournamentDto = new TournamentDto(
-                tournament.getId(),
-                tournament.getName(),
-                tournament.getGenre()
+        TournamentDto response = new TournamentDto(
+                savedTournament.getId(),
+                savedTournament.getName(),
+                savedTournament.getGenre()
         );
-
-        return Optional.of(tournamentDto);
+        return Optional.of(response);
     }
 
     @Override
@@ -77,9 +62,7 @@ public class TournamentServiceImpl implements TournamentService {
                         .id(tournament.getId())
                         .name(tournament.getName())
                         .genre(tournament.getGenre())
-                        .build()) // Mueve esto dentro del map
+                        .build())
                 .toList();
     }
-
-
 }

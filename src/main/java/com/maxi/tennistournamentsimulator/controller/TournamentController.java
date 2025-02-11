@@ -1,7 +1,6 @@
 package com.maxi.tennistournamentsimulator.controller;
 
 import com.maxi.tennistournamentsimulator.dto.TournamentDto;
-import com.maxi.tennistournamentsimulator.entity.Tournament;
 import com.maxi.tennistournamentsimulator.service.TournamentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,15 +18,9 @@ public class TournamentController {
         this.tournamentService = tournamentService;
     }
 
-    @PostMapping
-    public ResponseEntity<TournamentDto> createTournament(@RequestBody Tournament tournament) {
-        Optional<TournamentDto> tournamentDto = tournamentService.addTournament(
-                tournament.getName(),
-                String.valueOf(tournament.getGenre())
-        );
-        return tournamentDto
-                .map(dto -> new ResponseEntity<>(dto, HttpStatus.CREATED))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+    @GetMapping
+    public ResponseEntity<List<TournamentDto>> getAllTournaments() {
+        return ResponseEntity.ok(tournamentService.getAllTournaments());
     }
 
     @GetMapping("/{id}")
@@ -37,10 +30,14 @@ public class TournamentController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-
-    @GetMapping
-    public ResponseEntity<List<TournamentDto>> getAllTournaments() {
-        return ResponseEntity.ok(tournamentService.getAllTournaments());
+    @PostMapping
+    public ResponseEntity<TournamentDto> createTournament(@RequestBody TournamentDto tournamentDto) {
+        Optional<TournamentDto> createdTournament = tournamentService.addTournament(tournamentDto);
+        return createdTournament
+                .map(dto -> new ResponseEntity<>(dto, HttpStatus.CREATED))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
+
+
 
 }

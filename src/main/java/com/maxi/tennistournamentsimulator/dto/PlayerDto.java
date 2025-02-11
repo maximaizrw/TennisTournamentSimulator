@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PlayerDto {
+    private Long id;
     private String name;
     private int skillLevel;
     private int strength;
