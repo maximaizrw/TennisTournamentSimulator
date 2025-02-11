@@ -14,5 +14,5 @@ public class TournamentDto {
     private Long id;
     private String name;
     private Genre genre;
-    private List<Long> playerIds; // Lista de IDs de jugadores
+    private List<PlayerDto> players;
 }

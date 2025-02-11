@@ -1,5 +1,6 @@
 package com.maxi.tennistournamentsimulator.service.impl;
 
+import com.maxi.tennistournamentsimulator.dto.PlayerDto;
 import com.maxi.tennistournamentsimulator.dto.TournamentDto;
 import com.maxi.tennistournamentsimulator.entity.Player;
 import com.maxi.tennistournamentsimulator.entity.Tournament;
@@ -50,27 +51,44 @@ public class TournamentServiceImpl implements TournamentService {
         Optional<Tournament> tournamentOptional = tournamentRepository.findById(id);
         if (tournamentOptional.isPresent()) {
             Tournament tournament = tournamentOptional.get();
+
+            // Mapear los jugadores al DTO correspondiente
+            List<PlayerDto> playerDtos = tournament.getPlayers().stream()
+                    .map(player -> new PlayerDto(player.getId(), player.getName(), player.getSkillLevel(), player.getStrength(), player.getMovementSpeed(), player.getReactionTime(), player.getGenre())) // Aquí puedes agregar más propiedades del jugador si las tienes
+                    .toList();
+
             return Optional.of(new TournamentDto(
                     tournament.getId(),
                     tournament.getName(),
                     tournament.getGenre(),
-                    null));
+                    playerDtos
+            ));
         } else {
             return Optional.empty();
         }
     }
 
+
     @Transactional(readOnly = true)
     @Override
     public List<TournamentDto> getAllTournaments() {
         return tournamentRepository.findAll().stream()
-                .map(tournament -> TournamentDto.builder()
-                        .id(tournament.getId())
-                        .name(tournament.getName())
-                        .genre(tournament.getGenre())
-                        .build())
+                .map(tournament -> {
+                    // Mapear los jugadores del torneo
+                    List<PlayerDto> playerDtos = tournament.getPlayers().stream()
+                            .map(player -> new PlayerDto(player.getId(), player.getName(), player.getSkillLevel(), player.getStrength(), player.getMovementSpeed(), player.getReactionTime(), player.getGenre())) // Aquí puedes agregar más propiedades del jugador si las tienes
+                            .toList();
+
+                    return TournamentDto.builder()
+                            .id(tournament.getId())
+                            .name(tournament.getName())
+                            .genre(tournament.getGenre())
+                            .players(playerDtos) // Agregar la lista de jugadores
+                            .build();
+                })
                 .toList();
     }
+
 
     @Transactional
     @Override
