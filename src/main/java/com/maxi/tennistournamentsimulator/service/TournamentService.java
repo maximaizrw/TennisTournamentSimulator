@@ -9,4 +9,6 @@ public interface TournamentService {
     Optional<TournamentDto> addTournament(TournamentDto tournamentDto);
     Optional<TournamentDto> getTournamentById(Long id);
     List<TournamentDto> getAllTournaments();
+    void addPlayersToTournament(Long tournamentId, List<Long> playerIds);
+
 }

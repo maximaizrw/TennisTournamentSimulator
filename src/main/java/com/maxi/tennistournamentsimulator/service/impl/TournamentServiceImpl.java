@@ -1,7 +1,9 @@
 package com.maxi.tennistournamentsimulator.service.impl;
 
 import com.maxi.tennistournamentsimulator.dto.TournamentDto;
+import com.maxi.tennistournamentsimulator.entity.Player;
 import com.maxi.tennistournamentsimulator.entity.Tournament;
+import com.maxi.tennistournamentsimulator.repository.PlayerRepository;
 import com.maxi.tennistournamentsimulator.repository.TournamentRepository;
 import com.maxi.tennistournamentsimulator.service.TournamentService;
 import org.springframework.stereotype.Service;
@@ -14,9 +16,11 @@ import java.util.Optional;
 public class TournamentServiceImpl implements TournamentService {
 
     private final TournamentRepository tournamentRepository;
+    private final PlayerRepository playerRepository;
 
-    public TournamentServiceImpl(TournamentRepository tournamentRepository) {
+    public TournamentServiceImpl(TournamentRepository tournamentRepository, PlayerRepository playerRepository) {
         this.tournamentRepository = tournamentRepository;
+        this.playerRepository = playerRepository;
     }
 
     @Transactional
@@ -35,7 +39,8 @@ public class TournamentServiceImpl implements TournamentService {
         TournamentDto response = new TournamentDto(
                 savedTournament.getId(),
                 savedTournament.getName(),
-                savedTournament.getGenre()
+                savedTournament.getGenre(),
+                null
         );
         return Optional.of(response);
     }
@@ -48,7 +53,8 @@ public class TournamentServiceImpl implements TournamentService {
             return Optional.of(new TournamentDto(
                     tournament.getId(),
                     tournament.getName(),
-                    tournament.getGenre()));
+                    tournament.getGenre(),
+                    null));
         } else {
             return Optional.empty();
         }
@@ -65,4 +71,20 @@ public class TournamentServiceImpl implements TournamentService {
                         .build())
                 .toList();
     }
+
+    @Transactional
+    @Override
+    public void addPlayersToTournament(Long tournamentId, List<Long> playerIds) {
+        Tournament tournament = tournamentRepository.findById(tournamentId)
+                .orElseThrow(() -> new IllegalArgumentException("Torneo no encontrado"));
+
+        List<Player> players = playerRepository.findAllById(playerIds);
+        if (players.isEmpty()) {
+            throw new IllegalArgumentException("No se encontraron jugadores con los IDs proporcionados");
+        }
+
+        tournament.getPlayers().addAll(players);
+        tournamentRepository.save(tournament);
+    }
+
 }

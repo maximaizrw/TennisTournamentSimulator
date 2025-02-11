@@ -38,6 +38,10 @@ public class TournamentController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
-
-
+    @PutMapping("/{id}/players")
+    public ResponseEntity<Void> addPlayersToTournament(
+            @PathVariable Long id, @RequestBody List<Long> playerIds) {
+        tournamentService.addPlayersToTournament(id, playerIds);
+        return ResponseEntity.ok().build();
+    }
 }
