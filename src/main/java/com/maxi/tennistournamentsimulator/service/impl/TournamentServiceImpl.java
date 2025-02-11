@@ -30,7 +30,7 @@ public class TournamentServiceImpl implements TournamentService {
         Tournament tournament = new Tournament(
                 null,
                 tournamentDto.getName(),
-                tournamentDto.getGenre(),
+                tournamentDto.getGender(),
                 null,
                 null,
                 null
@@ -40,7 +40,7 @@ public class TournamentServiceImpl implements TournamentService {
         TournamentDto response = new TournamentDto(
                 savedTournament.getId(),
                 savedTournament.getName(),
-                savedTournament.getGenre(),
+                savedTournament.getGender(),
                 null
         );
         return Optional.of(response);
@@ -54,13 +54,13 @@ public class TournamentServiceImpl implements TournamentService {
 
             // Mapear los jugadores al DTO correspondiente
             List<PlayerDto> playerDtos = tournament.getPlayers().stream()
-                    .map(player -> new PlayerDto(player.getId(), player.getName(), player.getSkillLevel(), player.getStrength(), player.getMovementSpeed(), player.getReactionTime(), player.getGenre())) // Aquí puedes agregar más propiedades del jugador si las tienes
+                    .map(player -> new PlayerDto(player.getId(), player.getName(), player.getSkillLevel(), player.getStrength(), player.getMovementSpeed(), player.getReactionTime(), player.getGender())) // Aquí puedes agregar más propiedades del jugador si las tienes
                     .toList();
 
             return Optional.of(new TournamentDto(
                     tournament.getId(),
                     tournament.getName(),
-                    tournament.getGenre(),
+                    tournament.getGender(),
                     playerDtos
             ));
         } else {
@@ -76,13 +76,13 @@ public class TournamentServiceImpl implements TournamentService {
                 .map(tournament -> {
                     // Mapear los jugadores del torneo
                     List<PlayerDto> playerDtos = tournament.getPlayers().stream()
-                            .map(player -> new PlayerDto(player.getId(), player.getName(), player.getSkillLevel(), player.getStrength(), player.getMovementSpeed(), player.getReactionTime(), player.getGenre())) // Aquí puedes agregar más propiedades del jugador si las tienes
+                            .map(player -> new PlayerDto(player.getId(), player.getName(), player.getSkillLevel(), player.getStrength(), player.getMovementSpeed(), player.getReactionTime(), player.getGender())) // Aquí puedes agregar más propiedades del jugador si las tienes
                             .toList();
 
                     return TournamentDto.builder()
                             .id(tournament.getId())
                             .name(tournament.getName())
-                            .genre(tournament.getGenre())
+                            .gender(tournament.getGender())
                             .players(playerDtos) // Agregar la lista de jugadores
                             .build();
                 })

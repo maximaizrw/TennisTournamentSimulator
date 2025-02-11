@@ -32,7 +32,7 @@ public class PlayerServiceImpl implements PlayerService {
                 .strength(playerDto.getStrength())
                 .movementSpeed(playerDto.getMovementSpeed())
                 .reactionTime(playerDto.getReactionTime())
-                .genre(playerDto.getGenre())
+                .gender(playerDto.getGender())
                 .build();
 
          Player savedPlayer = playerRepository.save(player);
@@ -44,7 +44,7 @@ public class PlayerServiceImpl implements PlayerService {
                  savedPlayer.getStrength(),
                  savedPlayer.getMovementSpeed(),
                  savedPlayer.getReactionTime(),
-                 savedPlayer.getGenre()
+                 savedPlayer.getGender()
          );
          return Optional.of(response);
     }
@@ -62,7 +62,7 @@ public class PlayerServiceImpl implements PlayerService {
                     player.getStrength(),
                     player.getMovementSpeed(),
                     player.getReactionTime(),
-                    player.getGenre()
+                    player.getGender()
             ));
         }
         return Optional.empty();
@@ -79,7 +79,7 @@ public class PlayerServiceImpl implements PlayerService {
                                 .strength(player.getStrength())
                                 .movementSpeed(player.getMovementSpeed())
                                 .reactionTime(player.getReactionTime())
-                                .genre(player.getGenre())
+                                .gender(player.getGender())
                                 .build())
                 .toList();
     }

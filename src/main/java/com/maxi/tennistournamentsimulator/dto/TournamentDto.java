@@ -1,6 +1,6 @@
 package com.maxi.tennistournamentsimulator.dto;
 
-import com.maxi.tennistournamentsimulator.enums.Genre;
+import com.maxi.tennistournamentsimulator.enums.Gender;
 import lombok.*;
 
 import java.util.List;
@@ -13,6 +13,6 @@ import java.util.List;
 public class TournamentDto {
     private Long id;
     private String name;
-    private Genre genre;
+    private Gender gender;
     private List<PlayerDto> players;
 }

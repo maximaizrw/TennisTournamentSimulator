@@ -1,6 +1,6 @@
 package com.maxi.tennistournamentsimulator.dto;
 
-import com.maxi.tennistournamentsimulator.enums.Genre;
+import com.maxi.tennistournamentsimulator.enums.Gender;
 import lombok.*;
 
 @Getter
@@ -15,5 +15,5 @@ public class PlayerDto {
     private int strength;
     private int movementSpeed;
     private int reactionTime;
-    private Genre genre;
+    private Gender gender;
 }

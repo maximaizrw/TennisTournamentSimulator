@@ -1,6 +1,6 @@
 package com.maxi.tennistournamentsimulator.entity;
 
-import com.maxi.tennistournamentsimulator.enums.Genre;
+import com.maxi.tennistournamentsimulator.enums.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -26,7 +26,7 @@ public class Tournament {
 
     @NotNull(message = "El género del torneo no puede ser nulo")
     @Enumerated(EnumType.STRING)
-    private Genre genre;
+    private Gender gender;
 
     @ManyToMany
     @JoinTable(

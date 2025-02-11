@@ -1,6 +1,6 @@
 package com.maxi.tennistournamentsimulator.entity;
 
-import com.maxi.tennistournamentsimulator.enums.Genre;
+import com.maxi.tennistournamentsimulator.enums.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -49,6 +49,9 @@ public class Player {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Genre genre;
+    private Gender gender;
 
+    public boolean isMale() {
+        return this.gender == Gender.MALE;
+    }
 }
